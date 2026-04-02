@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Opret din AtoCraft udbyderkonto og begynd at modtage bookinger">
+    <title>Opret Udbyderkonto - AtoCraft</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <style>
+        /* Additional page-specific styles */
+        .setup-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .provider-info-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .provider-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .provider-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .info-value {
+            color: #212529;
+        }
+
+        .form-section {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 8px;
+        }
+
+        .form-label .required {
+            color: #dc3545;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.15s ease-in-out;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0080FF;
+            box-shadow: 0 0 0 3px rgba(0, 128, 255, 0.1);
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .password-hint {
+            font-size: 14px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background: #0080FF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            background: #0056b3;
+        }
+
+        .submit-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .app-links {
+            background: #e7f3ff;
+            border: 1px solid #bee5eb;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .app-link-button {
+            display: inline-block;
+            margin: 8px;
+            padding: 12px 24px;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.15s;
+        }
+
+        .app-link-button:hover {
+            background: #218838;
+        }
+
+        .app-link-button.primary {
+            background: #0080FF;
+        }
+
+        .app-link-button.primary:hover {
+            background: #0056b3;
+        }
+
+        .app-link-button.browser {
+            background: #6c757d;
+        }
+
+        .app-link-button.browser:hover {
+            background: #5a6268;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0080FF;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .next-steps {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .next-steps h3 {
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+
+        .next-steps ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .next-steps li {
+            margin-bottom: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 640px) {
+            .setup-container {
+                padding: 16px;
+                margin: 20px auto;
+            }
+
+            .provider-info-row {
+                flex-direction: column;
+            }
+
+            .info-label {
+                margin-bottom: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <!-- Loading State -->
+        <div id="loadingState">
+            <div class="text-center">
+                <div class="loading-spinner"></div>
+                <p>Validerer invitation...</p>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="hidden">
+            <div class="error-message">
+                <h2>❌ Ugyldig eller udløbet invitation</h2>
+                <p id="errorMessage">Invitation linket er ikke gyldigt eller er udløbet. Kontakt venligst AtoCraft support.</p>
+            </div>
+            <div class="text-center">
+                <a href="mailto:support@atocraft.dk" class="app-link-button">Kontakt Support</a>
+            </div>
+        </div>
+
+        <!-- Success State -->
+        <div id="successState" class="hidden">
+            <div class="success-message">
+                <h2>✅ Konto oprettet!</h2>
+                <p id="successMessage">Velkommen til AtoCraft! Din konto er nu oprettet.</p>
+            </div>
+
+            <div class="app-links">
+                <h3>Log ind i AtoCraft appen</h3>
+                <p>Download appen og log ind med din email og adgangskode</p>
+                <a href="#" class="app-link-button primary" id="openAppButton">📱 Åbn i AtoCraft App</a>
+                <a href="#" class="app-link-button browser" id="openBrowserButton">🌐 Åbn i Browser</a>
+                <div style="margin-top: 20px;">
+                    <a href="https://apps.apple.com/app/atocraft" class="app-link-button">App Store</a>
+                    <a href="https://play.google.com/store/apps/details?id=com.atcraft.app" class="app-link-button">Google Play</a>
+                </div>
+            </div>
+
+            <div class="next-steps">
+                <h3>Næste skridt</h3>
+                <ul>
+                    <li>📱 Download AtoCraft appen fra App Store eller Google Play</li>
+                    <li>🔐 Log ind med din email og adgangskode</li>
+                    <li>📅 Administrer din kalender og tilgængelighed</li>
+                    <li>📋 Se og håndter dine bookinger</li>
+                    <li>💰 Følg dine indtægter og statistikker</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Setup Form -->
+        <div id="setupForm" class="hidden">
+            <!-- Header -->
+            <div class="text-center" style="margin-bottom: 32px;">
+                <h1>Velkommen til AtoCraft!</h1>
+                <p style="font-size: 18px; color: #6c757d;">Opret din udbyderkonto</p>
+            </div>
+
+            <!-- Provider Info -->
+            <div class="provider-info-card">
+                <h3 style="margin-top: 0;">Virksomhedsoplysninger</h3>
+                <div class="provider-info-row">
+                    <span class="info-label">Navn:</span>
+                    <span class="info-value" id="providerName">-</span>
+                </div>
+                <div class="provider-info-row">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value" id="providerEmail">-</span>
+                </div>
+                <div class="provider-info-row">
+                    <span class="info-label">Virksomhed:</span>
+                    <span class="info-value" id="providerBusiness">-</span>
+                </div>
+                <div class="provider-info-row">
+                    <span class="info-label">CVR:</span>
+                    <span class="info-value" id="providerCVR">-</span>
+                </div>
+            </div>
+
+            <!-- Account Setup Form -->
+            <form id="accountForm" class="form-section">
+                <h3 style="margin-top: 0;">Opret din konto</h3>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">Telefonnummer (valgfrit)</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        class="form-input"
+                        placeholder="+45 12 34 56 78"
+                        autocomplete="tel"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">
+                        Adgangskode <span class="required">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-input"
+                        placeholder="Mindst 6 tegn"
+                        required
+                        autocomplete="new-password"
+                    >
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                    <p class="password-hint" id="strengthText">Adgangskoden skal være mindst 6 tegn</p>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">
+                        Bekræft adgangskode <span class="required">*</span>
+                    </label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        class="form-input"
+                        placeholder="Gentag adgangskode"
+                        required
+                        autocomplete="new-password"
+                    >
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    Opret konto
+                </button>
+            </form>
+
+            <!-- App Download Links -->
+            <div class="app-links">
+                <p style="margin-bottom: 16px;">Har du appen installeret?</p>
+                <a href="#" class="app-link-button primary" id="openSetupInApp">📱 Åbn i AtoCraft App</a>
+                <p style="margin-top: 16px; font-size: 14px; color: #6c757d;">
+                    Har du ikke appen? Download den fra App Store eller Google Play
+                </p>
+            </div>
+
+            <div class="next-steps">
+                <h3>Efter oprettelse kan du:</h3>
+                <ul>
+                    <li>📅 Administrere din kalender og tilgængelighed</li>
+                    <li>📋 Se og håndtere bookinger i realtid</li>
+                    <li>🗺️ Opdatere dine serviceområder</li>
+                    <li>💰 Følge dine indtægter og statistikker</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration — same backend for now
+        const BACKEND_URL = 'https://craho-production.up.railway.app';
+
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        // State
+        let providerData = null;
+
+        // DOM Elements
+        const loadingState = document.getElementById('loadingState');
+        const errorState = document.getElementById('errorState');
+        const successState = document.getElementById('successState');
+        const setupForm = document.getElementById('setupForm');
+        const accountForm = document.getElementById('accountForm');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+        const submitButton = document.getElementById('submitButton');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!token) {
+                showError('Manglende invitation token. Kontakt venligst AtoCraft support.');
+                return;
+            }
+            validateToken();
+        });
+
+        // Validate invitation token
+        async function validateToken() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/provider-setup/validate/${token}`);
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    showError(error.error || 'Ugyldig eller udløbet invitation');
+                    return;
+                }
+
+                const data = await response.json();
+                providerData = data.provider;
+
+                // Populate provider info
+                document.getElementById('providerName').textContent = providerData.name;
+                document.getElementById('providerEmail').textContent = providerData.email;
+                document.getElementById('providerBusiness').textContent = providerData.business_name;
+                document.getElementById('providerCVR').textContent = providerData.cvr_number;
+
+                // Show form
+                loadingState.classList.add('hidden');
+                setupForm.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Validation error:', error);
+                showError('Kunne ikke validere invitation. Tjek din internetforbindelse og prøv igen.');
+            }
+        }
+
+        // Password strength checker
+        passwordInput.addEventListener('input', (e) => {
+            const password = e.target.value;
+            const strength = calculatePasswordStrength(password);
+
+            // Update strength bar
+            strengthBar.style.width = `${strength.percentage}%`;
+            strengthBar.style.backgroundColor = strength.color;
+            strengthText.textContent = strength.text;
+        });
+
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+
+            if (password.length >= 6) strength += 25;
+            if (password.length >= 10) strength += 25;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 25;
+            if (/\d/.test(password)) strength += 15;
+            if (/[^a-zA-Z0-9]/.test(password)) strength += 10;
+
+            let color, text;
+            if (strength < 25) {
+                color = '#dc3545';
+                text = 'For svag';
+            } else if (strength < 50) {
+                color = '#ffc107';
+                text = 'Svag';
+            } else if (strength < 75) {
+                color = '#17a2b8';
+                text = 'God';
+            } else {
+                color = '#28a745';
+                text = 'Stærk';
+            }
+
+            return { percentage: strength, color, text };
+        }
+
+        // Form submission
+        accountForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const phone = document.getElementById('phone').value;
+
+            // Validation
+            if (!password || !confirmPassword) {
+                alert('Udfyld venligst alle påkrævede felter');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Adgangskoderne matcher ikke');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Adgangskoden skal være mindst 6 tegn');
+                return;
+            }
+
+            // Disable submit button
+            submitButton.disabled = true;
+            submitButton.textContent = 'Opretter konto...';
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/provider-setup/complete`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token,
+                        password,
+                        phone: phone.trim() || null,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Handle specific error: User already exists
+                    if (data.code === 'USER_EXISTS') {
+                        const doLogin = confirm(
+                            `Der findes allerede en konto med email ${providerData.email}.\n\n` +
+                            `Klik OK for at åbne login-siden hvor du kan linke din udbyder-profil.\n\n` +
+                            `Eller klik Annuller for at nulstille din adgangskode.`
+                        );
+
+                        if (doLogin) {
+                            tryOpenAppWithFallback(
+                                `atcraft://auth/login?email=${encodeURIComponent(providerData.email)}&linkProvider=true`,
+                                `https://atocraft.dk/auth/login.html?email=${encodeURIComponent(providerData.email)}&linkProvider=true`
+                            );
+                        } else {
+                            window.location.href = `/auth/forgot-password?email=${encodeURIComponent(providerData.email)}`;
+                        }
+                        return;
+                    }
+
+                    throw new Error(data.error || 'Kunne ikke oprette konto');
+                }
+
+                showSuccess(data.user.name);
+
+            } catch (error) {
+                console.error('Setup error:', error);
+                alert(error.message || 'Kunne ikke oprette konto. Prøv igen senere.');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Opret konto';
+            }
+        });
+
+        // Function to try opening app with browser fallback
+        function tryOpenAppWithFallback(appUrl, browserUrl) {
+            window.location.href = appUrl;
+
+            setTimeout(() => {
+                if (!document.hidden) {
+                    console.log('App ikke åbnet, bruger browser fallback');
+                    window.location.href = browserUrl;
+                }
+            }, 2000);
+        }
+
+        // Show error state
+        function showError(message) {
+            loadingState.classList.add('hidden');
+            setupForm.classList.add('hidden');
+            errorState.classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        // Show success state
+        function showSuccess(userName) {
+            setupForm.classList.add('hidden');
+            successState.classList.remove('hidden');
+            document.getElementById('successMessage').textContent =
+                `Velkommen til AtoCraft, ${userName}! Du kan nu logge ind og administrere dine bookinger.`;
+        }
+
+        // Device detection
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Handle "Åbn i AtoCraft App" button in setup form
+        document.getElementById('openSetupInApp')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const deepLink = `atcraft://provider-setup?token=${encodeURIComponent(token)}`;
+            tryOpenAppWithFallback(deepLink, window.location.href);
+        });
+
+        // Handle "Åbn i AtoCraft App" button in success state
+        document.getElementById('openAppButton')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            tryOpenAppWithFallback(
+                'atcraft://auth/login',
+                'https://atocraft.dk/auth/login.html'
+            );
+        });
+
+        // Handle "Åbn i Browser" button
+        document.getElementById('openBrowserButton')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'https://atocraft.dk/auth/login.html';
+        });
+    </script>
+</body>
+</html>
