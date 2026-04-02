@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "CRSKYKCDAY.com.atcraft.app",
+        "paths": ["*"]
+      }
+    ]
+  }
+}
